@@ -6,6 +6,7 @@ import compression from "compression";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
+import router from "./router";
 
 const app = express();
 const URL = process.env.MONGO_URL;
@@ -34,6 +35,10 @@ server.listen(PORT, () => {
 
 // ensures that Mongoose uses the native JavaScript promises, which are widely supported and consistent with the ECMAScript standard.
 mongoose.Promise = Promise;
-
 mongoose.connect(URL);
 mongoose.connection.on("error", (error: Error) => console.log(error));
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+app.use("/", router());

@@ -7,6 +7,7 @@ export const register = async (req: express.Request, res: express.Response) => {
   try {
     // destructure elements expected from the request as defined in the schema
     const { email, password, username } = req.body;
+    console.log(email, password, username);
 
     // error handling if data does not exist in body
     if (!email || !password || !username) {
@@ -16,8 +17,8 @@ export const register = async (req: express.Request, res: express.Response) => {
     // get existing user
     const existingUser = await getUserByEmail(email);
 
-    // if no user exists return error
-    if (!existingUser) {
+    // if user already exists return error
+    if (existingUser) {
       return res.sendStatus(400);
     }
 
